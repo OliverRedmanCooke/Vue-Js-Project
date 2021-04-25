@@ -1,5 +1,5 @@
 <template>
-  <button :style="{background: color}" class="btn">{{ name }}</button>
+  <button @click="onClick" :style="{background: color}" class="btn">{{ name }}</button>
 </template>
 
 <script>
@@ -9,5 +9,10 @@ export default {
     name: String,
     color: String
   },
+  methods: {
+    onClick() {
+      console.log('Click')
+    }
+  }
 };
 </script>

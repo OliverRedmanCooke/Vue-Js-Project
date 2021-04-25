@@ -1,22 +1,60 @@
 <template>
   <div class="container">
-    <Header title="Task Manager"/>
+    <Header title="Task Manager" />
+    <Tasks @delete-task="deleteTask" :tasks="tasks" />
   </div>
 </template>
 
 <script>
-import Header from './components/Header'
+import Header from "./components/Header";
+import Tasks from "./components/Tasks";
 
 export default {
   name: "App",
   components: {
-    Header
+    Header,
+    Tasks,
+  },
+  data() {
+    return {
+      tasks: [],
+    };
+  },
+  created() {
+    this.tasks = [
+      {
+        id: 1,
+        text: "YO BOY",
+        day: "March",
+        reminder: false,
+      },
+      {
+        id: 2,
+        text: "YO BOY 2",
+        day: "May",
+        reminder: true,
+      },
+      {
+        id: 3,
+        text: "YO BOY 3",
+        day: "November",
+        reminder: true,
+      },
+    ];
+  },
+  methods: {
+    deleteTask(id) {
+      if(confirm('Are sure about this?')) {
+      this.tasks = this.tasks.filter((task) => task.id !== id)
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+
 * {
   box-sizing: border-box;
   margin: 0;
