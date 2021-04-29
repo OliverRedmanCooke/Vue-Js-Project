@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <h1>{{ title }}</h1>
-    <Button name='Add Task' color="Red" />
+    <Button @click="toggleForm" :name="showAddTask ? 'Close': 'add task'" :color="showAddTask ? 'red': 'green'" />
   </div>
 </template>
 
@@ -15,8 +15,14 @@ export default {
       type: String,
       default: "Hello World",
     },
+    showAddTask: Boolean
   },
-  components: {Button}
+  components: {Button},
+  methods: {
+    toggleForm() {
+      this.$emit('toggle-form')
+    }
+  }
 };
 </script>
 
