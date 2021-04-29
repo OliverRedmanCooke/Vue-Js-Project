@@ -26,27 +26,8 @@ export default {
       showAddTask: false
     };
   },
-  created() {
-    this.tasks = [
-      {
-        id: 1,
-        text: "YO BOY",
-        day: "March",
-        reminder: false,
-      },
-      {
-        id: 2,
-        text: "YO BOY 2",
-        day: "May",
-        reminder: true,
-      },
-      {
-        id: 3,
-        text: "YO BOY 3",
-        day: "November",
-        reminder: true,
-      },
-    ];
+   async created() {
+    this.tasks = await this.fetchTasks()
   },
   methods: {
     addTask(task) {
@@ -65,7 +46,14 @@ export default {
     },
     toggleForm() {
       this.showAddTask = !this.showAddTask
-    }
+    },
+     async fetchTasks() {
+       const res = await fetch('http://localhost:5000/tasks')
+
+       const data = await res.json()
+
+        return data
+     }
   },
 };
 </script>
