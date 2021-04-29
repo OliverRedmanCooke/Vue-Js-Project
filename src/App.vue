@@ -1,10 +1,18 @@
 <template>
   <div class="container">
-    <Header @toggle-form="toggleForm" :showAddTask="showAddTask" title="Task Manager" />
-    <div v-if="showAddTask"> 
+    <Header
+      @toggle-form="toggleForm"
+      :showAddTask="showAddTask"
+      title="Task Manager"
+    />
+    <div v-if="showAddTask">
       <AddTask @add-task="addTask" />
     </div>
-    <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks" />
+    <Tasks
+      @toggle-reminder="toggleReminder"
+      @delete-task="deleteTask"
+      :tasks="tasks"
+    />
   </div>
 </template>
 
@@ -18,42 +26,57 @@ export default {
   components: {
     Header,
     Tasks,
-    AddTask
+    AddTask,
   },
   data() {
     return {
       tasks: [],
-      showAddTask: false
+      showAddTask: false,
     };
   },
-   async created() {
-    this.tasks = await this.fetchTasks()
+  async created() {
+    this.tasks = await this.fetchTasks();
   },
   methods: {
-    addTask(task) {
-      this.tasks = [...this.tasks, task]
-    },
     deleteTask(id) {
-      if(confirm('Are sure about this?')) {
-      this.tasks = this.tasks.filter((task) => task.id !== id)
+      if (confirm("Are sure about this?")) {
+        this.tasks = this.tasks.filter((task) => task.id !== id);
       }
     },
     toggleReminder(id) {
-      console.log(id)
-      this.tasks = this.tasks.map((task) => task.id === id ? {
-        ...task, reminder: !task.reminder
-      }: task)
+      console.log(id);
+      this.tasks = this.tasks.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              reminder: !task.reminder,
+            }
+          : task
+      );
     },
     toggleForm() {
-      this.showAddTask = !this.showAddTask
+      this.showAddTask = !this.showAddTask;
     },
-     async fetchTasks() {
-       const res = await fetch('http://localhost:5000/tasks')
+    async fetchTasks() {
+      const res = await fetch("http://localhost:5000/tasks");
 
-       const data = await res.json()
+      const data = await res.json();
 
-        return data
-     }
+      return data;
+    },
+    async addTask(task) {
+      const res = await fetch("http://localhost:5000/tasks", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(task),
+      });
+
+      const data = await res.json();
+
+      this.tasks = [...this.tasks, data];
+    },
   },
 };
 </script>
